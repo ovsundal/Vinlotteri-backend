@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Vinlotteri_backend.Models;
 
 namespace Vinlotteri_backend.Data;
 

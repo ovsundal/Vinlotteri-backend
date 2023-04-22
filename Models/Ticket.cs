@@ -1,4 +1,4 @@
-﻿namespace Vinlotteri_backend.Data;
+﻿namespace Vinlotteri_backend.Models;
 
 public class Ticket
 {
