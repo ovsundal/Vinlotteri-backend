@@ -9,5 +9,4 @@ public class Lottery
     [Required] public int TotalTickets { get; init; }
     [Required] public int TicketsSold { get; init; }
     public ICollection<Ticket> Tickets { get; set; }
-    public ICollection<Wine> Prizes { get; set; }
 }
