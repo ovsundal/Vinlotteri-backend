@@ -32,7 +32,7 @@ public class LotteryService : ILotteryService
             AvailableTicketsInfo = $"Available tickets: 100 / 100",
             TicketPriceInfo = $"Price per ticket: {lottery.TicketPrice},-",
             LotteryIncomeInfo = $"Lottery income: {0},-",
-            SpentOnPrizesInfo = $"Spent on prices: TO BE IMPLEMENTED",
+            SpentOnPrizesInfo = $"Spent on prizes: TO BE IMPLEMENTED",
             TotalBalanceInfo = $"Total: TO BE IMPLEMENTED"
         };
     }
@@ -52,7 +52,7 @@ public class LotteryService : ILotteryService
             AvailableTicketsInfo = $"Available tickets: {lottery.TotalTickets - lottery.TicketsSold} / 100",
             TicketPriceInfo = $"Price per ticket: {lottery.TicketPrice},-",
             LotteryIncomeInfo = $"Lottery income: {lottery.TicketsSold*lottery.TicketPrice},-",
-            SpentOnPrizesInfo = $"Spent on prices: TO BE IMPLEMENTED",
+            SpentOnPrizesInfo = $"Spent on prizes: TO BE IMPLEMENTED",
             TotalBalanceInfo = $"Total: TO BE IMPLEMENTED"
         };
     }
