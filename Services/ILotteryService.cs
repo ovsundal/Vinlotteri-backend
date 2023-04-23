@@ -5,4 +5,5 @@ namespace Vinlotteri_backend.Services;
 public interface ILotteryService
 {
     Task<CreateLotteryDto> CreateLottery();
+    Task<GetLotteryDto?> GetLotteryById(int id);
 }

@@ -36,4 +36,24 @@ public class LotteryService : ILotteryService
             TotalBalanceInfo = $"Total: TO BE IMPLEMENTED"
         };
     }
+
+    public async Task<GetLotteryDto?> GetLotteryById(int id)
+    {
+        var lottery = await _context.Lotteries.FindAsync(id);
+
+        if (lottery == null)
+        {
+            return null;
+        }
+
+        return new GetLotteryDto
+        {
+            Id = lottery.Id,
+            AvailableTicketsInfo = $"Available tickets: {lottery.TotalTickets - lottery.TicketsSold} / 100",
+            TicketPriceInfo = $"Price per ticket: {lottery.TicketPrice},-",
+            LotteryIncomeInfo = $"Lottery income: {lottery.TicketsSold*lottery.TicketPrice},-",
+            SpentOnPrizesInfo = $"Spent on prices: TO BE IMPLEMENTED",
+            TotalBalanceInfo = $"Total: TO BE IMPLEMENTED"
+        };
+    }
 }

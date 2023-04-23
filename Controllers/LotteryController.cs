@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Vinlotteri_backend.Data;
+using Vinlotteri_backend.DTOs;
 using Vinlotteri_backend.Services;
 
 namespace Vinlotteri_backend.Controllers;
@@ -33,13 +34,13 @@ public class LotteryController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetLottery(int id)
     {
-        var lottery = await _context.Lotteries.FindAsync(id);
+        var lotteryDto = await _lotteryService.GetLotteryById(id);
 
-        if (lottery == null)
+        if (lotteryDto == null)
         {
             return NotFound();
         }
-
-        return Ok(lottery);
+        
+        return Ok(lotteryDto);
     }
 }
