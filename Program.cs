@@ -1,11 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using Vinlotteri_backend.Data;
+using Vinlotteri_backend.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
-    builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<ApplicationDbContext>(options => 
+    options.UseSqlServer(Environment.GetEnvironmentVariable("VinlotteriConnectionString")));
+
+// Dependency injections
+builder.Services.AddTransient<ILotteryService, LotteryService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
