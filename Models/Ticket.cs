@@ -1,9 +1,11 @@
-﻿namespace Vinlotteri_backend.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Vinlotteri_backend.Models;
 
 public class Ticket
 {
-    public int Id { get; init; }
-    public int Number { get; init; }
-    public string Owner { get; init; } = string.Empty;
-    public bool HasWon { get; init; }
+    [Key] public int Id { get; init; }
+    [Required] public int Number { get; init; }
+    [Required] public string Owner { get; init; } = string.Empty;
+    [Required] public bool HasWon { get; init; }
 }

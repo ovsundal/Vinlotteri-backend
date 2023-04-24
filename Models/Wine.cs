@@ -1,8 +1,10 @@
-﻿namespace Vinlotteri_backend.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Vinlotteri_backend.Models;
 
 public class Wine
 {
-    public int Id { get; init; }
-    public decimal Price { get; init; }
-    public string Name { get; init; }
+    [Key] public int Id { get; init; }
+    [Required] public decimal Price { get; init; }
+    [Required] public string Name { get; init; }
 }
