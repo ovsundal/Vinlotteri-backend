@@ -28,14 +28,16 @@ public class LotteryService : ILotteryService
         _context.Lotteries.Add(lottery);
         await _context.SaveChangesAsync();
 
+        var totalWinePrice = lottery.Wines.Sum(wine => wine.Price);
+
         return new LotteryDto
         {
             Id = lottery.Id,
             AvailableTicketsInfo = $"Available tickets: 100 / 100",
             TicketPriceInfo = $"Price per ticket: {lottery.TicketPrice},-",
             LotteryIncomeInfo = $"Lottery income: {0},-",
-            SpentOnPrizesInfo = $"Spent on prizes: TO BE IMPLEMENTED",
-            TotalBalanceInfo = $"Total: TO BE IMPLEMENTED",
+            SpentOnPrizesInfo = $"Spent on prizes: {totalWinePrice},-",
+            TotalBalanceInfo = $"Total: {-totalWinePrice},-",
             Tickets = new List<TicketDto>(),
             Wines = lottery.Wines.Select(wine => new WineDto
             {
@@ -74,15 +76,18 @@ public class LotteryService : ILotteryService
             Name = wine.Name,
             HasBeenAwarded = wine.HasBeenAwarded
         });
-
+        
+        var totalWinePrice = lottery.Wines.Sum(wine => wine.Price);
+        var lotteryIncome = lottery.TicketsSold * lottery.TicketPrice;
+        
         return new LotteryDto
         {
             Id = lottery.Id,
             AvailableTicketsInfo = $"Available tickets: {lottery.TotalTickets - lottery.TicketsSold} / 100",
             TicketPriceInfo = $"Price per ticket: {lottery.TicketPrice},-",
-            LotteryIncomeInfo = $"Lottery income: {lottery.TicketsSold * lottery.TicketPrice},-",
-            SpentOnPrizesInfo = $"Spent on prizes: TO BE IMPLEMENTED",
-            TotalBalanceInfo = $"Total: TO BE IMPLEMENTED",
+            LotteryIncomeInfo = $"Lottery income: {lotteryIncome},-",
+            SpentOnPrizesInfo = $"Spent on prizes: {totalWinePrice},-",
+            TotalBalanceInfo = $"Total: {lotteryIncome - totalWinePrice},-",
             Tickets = ticketDtos,
             Wines = wineDtos
         };
