@@ -9,12 +9,10 @@ namespace Vinlotteri_backend.Controllers;
 [Route("[controller]")]
 public class LotteryController : ControllerBase
 {
-    private readonly ApplicationDbContext _context;
     private readonly ILotteryService _lotteryService;
 
-    public LotteryController(ApplicationDbContext context, ILotteryService lotteryService)
+    public LotteryController(ILotteryService lotteryService)
     {
-        _context = context;
         _lotteryService = lotteryService;
     }
 
