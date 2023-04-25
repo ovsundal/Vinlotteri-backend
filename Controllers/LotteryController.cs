@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Vinlotteri_backend.Data;
 using Vinlotteri_backend.DTOs;
 using Vinlotteri_backend.Services;
 
@@ -40,5 +39,18 @@ public class LotteryController : ControllerBase
         }
         
         return Ok(lotteryDto);
+    }
+    
+    [HttpPut("{id}")]
+    public async Task<IActionResult> BuyTicket(int id, [FromBody] TicketDto ticket)
+    {
+        var success = await _lotteryService.BuyTicket(id, ticket.Number, ticket.Owner);
+
+        if (!success)
+        {
+            return NotFound();
+        }
+
+        return Ok();
     }
 }
