@@ -8,4 +8,5 @@ public class GetLotteryDto
     public string LotteryIncomeInfo { get; init; }
     public string SpentOnPrizesInfo { get; init; }
     public string TotalBalanceInfo { get; init; }
+    public IEnumerable<TicketDto> Tickets { get; init; }
 }
