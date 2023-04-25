@@ -1,6 +1,6 @@
 ﻿namespace Vinlotteri_backend.DTOs;
 
-public record CreateLotteryDto
+public class LotteryDto
 {
     public int Id { get; init; }
     public string AvailableTicketsInfo { get; init; }

@@ -14,7 +14,7 @@ public class LotteryService : ILotteryService
         _context = context;
     }
 
-    public async Task<CreateLotteryDto> CreateLottery()
+    public async Task<LotteryDto> CreateLottery()
     {
         var lottery = new Lottery
         {
@@ -28,7 +28,7 @@ public class LotteryService : ILotteryService
         _context.Lotteries.Add(lottery);
         await _context.SaveChangesAsync();
 
-        return new CreateLotteryDto
+        return new LotteryDto
         {
             Id = lottery.Id,
             AvailableTicketsInfo = $"Available tickets: 100 / 100",
@@ -47,7 +47,7 @@ public class LotteryService : ILotteryService
         };
     }
 
-    public async Task<GetLotteryDto?> GetLotteryById(int id)
+    public async Task<LotteryDto?> GetLotteryById(int id)
     {
         var lottery = await _context.Lotteries
             .Include(lottery => lottery.Tickets)
@@ -75,7 +75,7 @@ public class LotteryService : ILotteryService
             HasBeenAwarded = wine.HasBeenAwarded
         });
 
-        return new GetLotteryDto
+        return new LotteryDto
         {
             Id = lottery.Id,
             AvailableTicketsInfo = $"Available tickets: {lottery.TotalTickets - lottery.TicketsSold} / 100",
