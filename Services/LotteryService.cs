@@ -16,14 +16,15 @@ public class LotteryService : ILotteryService
 
     public async Task<CreateLotteryDto> CreateLottery()
     {
-        // business rules for lottery here
         var lottery = new Lottery
         {
             TicketPrice = 10,
             TotalTickets = 100,
             TicketsSold = 0,
+            Wines = StaticWineDataApi.GetRandomWines(5),
+            Tickets = new List<Ticket>()
         };
-        
+
         _context.Lotteries.Add(lottery);
         await _context.SaveChangesAsync();
 
@@ -34,7 +35,15 @@ public class LotteryService : ILotteryService
             TicketPriceInfo = $"Price per ticket: {lottery.TicketPrice},-",
             LotteryIncomeInfo = $"Lottery income: {0},-",
             SpentOnPrizesInfo = $"Spent on prizes: TO BE IMPLEMENTED",
-            TotalBalanceInfo = $"Total: TO BE IMPLEMENTED"
+            TotalBalanceInfo = $"Total: TO BE IMPLEMENTED",
+            Tickets = new List<TicketDto>(),
+            Wines = lottery.Wines.Select(wine => new WineDto
+            {
+                Id = wine.Id,
+                Price = wine.Price,
+                Name = wine.Name,
+                HasBeenAwarded = wine.HasBeenAwarded
+            })
         };
     }
 
@@ -42,6 +51,8 @@ public class LotteryService : ILotteryService
     {
         var lottery = await _context.Lotteries
             .Include(lottery => lottery.Tickets)
+            .Include(lottery => lottery
+                .Wines.OrderBy(wine => wine.Price))
             .FirstOrDefaultAsync(lottery => lottery.Id == id);
 
         if (lottery == null)
@@ -49,11 +60,19 @@ public class LotteryService : ILotteryService
             return null;
         }
 
-        var tickets = lottery.Tickets.Select(ticket => new TicketDto
+        var ticketDtos = lottery.Tickets.Select(ticket => new TicketDto
         {
             Number = ticket.Number,
             Owner = ticket.Owner,
             HasWon = ticket.HasWon
+        });
+
+        var wineDtos = lottery.Wines.Select(wine => new WineDto
+        {
+            Id = wine.Id,
+            Price = wine.Price,
+            Name = wine.Name,
+            HasBeenAwarded = wine.HasBeenAwarded
         });
 
         return new GetLotteryDto
@@ -64,7 +83,8 @@ public class LotteryService : ILotteryService
             LotteryIncomeInfo = $"Lottery income: {lottery.TicketsSold * lottery.TicketPrice},-",
             SpentOnPrizesInfo = $"Spent on prizes: TO BE IMPLEMENTED",
             TotalBalanceInfo = $"Total: TO BE IMPLEMENTED",
-            Tickets = tickets
+            Tickets = ticketDtos,
+            Wines = wineDtos
         };
     }
 
