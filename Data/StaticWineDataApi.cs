@@ -31,7 +31,13 @@ public static class StaticWineDataApi
         for (int i = 0; i < count; i++)
         {
             int index = random.Next(Wines.Count);
-            randomWines.Add(Wines[index]);
+            
+            randomWines.Add(new Wine
+            {
+                Name = Wines[index].Name,
+                Price = Wines[index].Price,
+                HasBeenAwarded = false
+            });
         }
 
         return randomWines;
