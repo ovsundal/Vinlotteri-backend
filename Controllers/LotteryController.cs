@@ -23,7 +23,9 @@ public class LotteryController : ControllerBase
             return BadRequest(ModelState);
         }
         
-        var lotteryDto = await _lotteryService.CreateLottery();
+        var lotteryId = await _lotteryService.CreateLottery();
+        
+        var lotteryDto = await _lotteryService.GetLotteryById(lotteryId);
 
         return CreatedAtAction(nameof(GetLottery), new { id = lotteryDto.Id }, lotteryDto);
     }

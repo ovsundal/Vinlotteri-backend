@@ -14,7 +14,7 @@ public class LotteryService : ILotteryService
         _context = context;
     }
 
-    public async Task<LotteryDto> CreateLottery()
+    public async Task<int> CreateLottery()
     {
         var lottery = new Lottery
         {
@@ -28,25 +28,7 @@ public class LotteryService : ILotteryService
         _context.Lotteries.Add(lottery);
         await _context.SaveChangesAsync();
 
-        var totalWinePrice = lottery.Wines.Sum(wine => wine.Price);
-
-        return new LotteryDto
-        {
-            Id = lottery.Id,
-            AvailableTicketsInfo = $"Available tickets: 100 / 100",
-            TicketPriceInfo = $"Price per ticket: {lottery.TicketPrice},-",
-            LotteryIncomeInfo = $"Lottery income: {0},-",
-            SpentOnPrizesInfo = $"Spent on prizes: {totalWinePrice},-",
-            TotalBalanceInfo = $"Total: {-totalWinePrice},-",
-            Tickets = new List<TicketDto>(),
-            Wines = lottery.Wines.Select(wine => new WineDto
-            {
-                Id = wine.Id,
-                Price = wine.Price,
-                Name = wine.Name,
-                HasBeenAwarded = wine.HasBeenAwarded
-            })
-        };
+        return lottery.Id;
     }
 
     public async Task<LotteryDto?> GetLotteryById(int id)

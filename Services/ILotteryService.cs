@@ -4,7 +4,7 @@ namespace Vinlotteri_backend.Services;
 
 public interface ILotteryService
 {
-    Task<LotteryDto> CreateLottery();
+    Task<int> CreateLottery();
     Task<LotteryDto?> GetLotteryById(int id);
     Task<bool> BuyTicket(int lotteryId, int ticketNumber, string owner);
 }
