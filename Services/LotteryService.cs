@@ -65,11 +65,11 @@ public class LotteryService : ILotteryService
         return new LotteryDto
         {
             Id = lottery.Id,
-            AvailableTicketsInfo = $"Available tickets: {lottery.TotalTickets - lottery.TicketsSold} / 100",
+            AvailableTicketsInfo = $"Available tickets: {LotteryCalculator.CalculateAvailableTickets(lottery.TotalTickets, lottery.TicketsSold)} / 100",
             TicketPriceInfo = $"Price per ticket: {lottery.TicketPrice},-",
             LotteryIncomeInfo = $"Lottery income: {lotteryIncome},-",
             SpentOnPrizesInfo = $"Spent on prizes: {totalWinePrice},-",
-            TotalBalanceInfo = $"Total: {lotteryIncome - totalWinePrice},-",
+            TotalBalanceInfo = $"Total: {LotteryCalculator.CalculateLotteryBalance(lotteryIncome, totalWinePrice)},-",
             Tickets = ticketDtos,
             Wines = wineDtos
         };
