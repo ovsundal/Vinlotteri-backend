@@ -44,13 +44,23 @@ public class LotteryController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> BuyTicket(int id, [FromBody] TicketDto ticket)
     {
+        if (string.IsNullOrWhiteSpace(ticket.Owner))
+        {
+            throw new ArgumentException("Ticket owner cannot be empty");
+        }
         var success = await _lotteryService.BuyTicket(id, ticket.Number, ticket.Owner);
 
         if (!success)
         {
             return NotFound();
         }
-
-        return Ok();
+        
+        var lotteryDto = await _lotteryService.GetLotteryById(id);
+        if (lotteryDto == null)
+        {
+            return NotFound();
+        }
+    
+        return Ok(lotteryDto);
     }
 }
