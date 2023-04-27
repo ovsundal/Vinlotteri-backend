@@ -7,4 +7,5 @@ public interface ILotteryService
     Task<int> CreateLottery();
     Task<LotteryDto?> GetLotteryById(int id);
     Task<bool> BuyTicket(int lotteryId, int ticketNumber, string owner);
+    Task<bool> DrawWinner(int lotteryId, int wineId);
 }

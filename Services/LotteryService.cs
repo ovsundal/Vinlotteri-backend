@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Vinlotteri_backend.Data;
 using Vinlotteri_backend.DTOs;
+using Vinlotteri_backend.Exceptions;
 using Vinlotteri_backend.Models;
 
 namespace Vinlotteri_backend.Services;
@@ -96,6 +97,35 @@ public class LotteryService : ILotteryService
         lottery.TicketsSold++;
 
         await _context.SaveChangesAsync();
+
+        return true;
+    }
+
+    public async Task<bool> DrawWinner(int lotteryId, int wineId)
+    {
+        var lottery = await _context.Lotteries.FindAsync(lotteryId);
+        
+        if (lottery == null)
+        {
+            return false;
+        }
+
+        var wineToAward = lottery.Wines.FirstOrDefault(wine => wine.Id == wineId);
+        var availableCandidates = lottery.Tickets
+            .Where(ticket => !ticket.HasWon)
+            .ToList();
+
+        if (availableCandidates.Count() == 0)
+        {
+            throw new NoAvailableCandidatesException();
+        }
+
+        var randomIndex = new Random().Next(availableCandidates.Count());
+        var selectedTicket = availableCandidates[randomIndex];
+        selectedTicket.HasWon = true;
+        wineToAward.WonBy = selectedTicket.Owner;
+
+        _context.SaveChangesAsync();
 
         return true;
     }
