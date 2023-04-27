@@ -52,13 +52,15 @@ public class LotteryService : ILotteryService
             HasWon = ticket.HasWon
         });
 
-        var wineDtos = lottery.Wines.Select(wine => new WineDto
+        var wineDtos = lottery.Wines
+            .Select(wine => new WineDto
         {
             Id = wine.Id,
             Price = wine.Price,
             Name = wine.Name,
             WonBy = wine.WonBy
-        });
+        })
+            .OrderBy(wine => wine.Price);
         
         var totalWinePrice = lottery.Wines.Sum(wine => wine.Price);
         var lotteryIncome = lottery.TicketsSold * lottery.TicketPrice;
@@ -72,7 +74,8 @@ public class LotteryService : ILotteryService
             SpentOnPrizesInfo = $"Spent on prizes: {totalWinePrice},-",
             TotalBalanceInfo = $"Total: {LotteryCalculator.CalculateLotteryBalance(lotteryIncome, totalWinePrice)},-",
             Tickets = ticketDtos,
-            Wines = wineDtos
+            Wines = wineDtos,
+            NextWineToAward = wineDtos.FirstOrDefault(wine => string.IsNullOrWhiteSpace(wine.WonBy))
         };
     }
 

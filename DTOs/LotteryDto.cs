@@ -10,4 +10,5 @@ public class LotteryDto
     public string TotalBalanceInfo { get; init; }
     public IEnumerable<TicketDto> Tickets { get; init; }
     public IEnumerable<WineDto> Wines { get; init; }
+    public WineDto? NextWineToAward { get; init; }
 }
