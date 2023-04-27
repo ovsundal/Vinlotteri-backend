@@ -63,7 +63,7 @@ public class LotteryService : ILotteryService
             .OrderBy(wine => wine.Price);
         
         var totalWinePrice = lottery.Wines.Sum(wine => wine.Price);
-        var lotteryIncome = lottery.TicketsSold * lottery.TicketPrice;
+        var lotteryIncome = LotteryCalculator.CalculateLotteryIncome(lottery.TicketsSold, lottery.TicketPrice);
         
         return new LotteryDto
         {
