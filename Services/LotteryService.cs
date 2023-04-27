@@ -48,7 +48,7 @@ public class LotteryService : ILotteryService
         {
             Number = ticket.Number,
             Owner = ticket.Owner,
-            HasWon = ticket.HasWon
+            HasWon = !String.IsNullOrWhiteSpace(ticket.WonBy)
         });
 
         var wineDtos = lottery.Wines.Select(wine => new WineDto
@@ -88,7 +88,7 @@ public class LotteryService : ILotteryService
         {
             Number = ticketNumber,
             Owner = owner,
-            HasWon = false,
+            WonBy = string.Empty,
             LotteryId = lotteryId
         };
 
