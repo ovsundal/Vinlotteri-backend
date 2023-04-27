@@ -43,7 +43,7 @@ public class LotteryController : ControllerBase
         return Ok(lotteryDto);
     }
     
-    [HttpPut("{id}")]
+    [HttpPost("{id}")]
     public async Task<IActionResult> BuyTicket(int id, [FromBody] TicketDto ticket)
     {
         if (string.IsNullOrWhiteSpace(ticket.Owner))
