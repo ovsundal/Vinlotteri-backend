@@ -65,4 +65,23 @@ public class LotteryController : ControllerBase
     
         return Ok(lotteryDto);
     }
+    
+    [HttpGet("{lotteryId}/{wineId}")]
+    public async Task<IActionResult> DrawWinner(int lotteryId, int wineId)
+    {
+        var success = await _lotteryService.DrawWinner(lotteryId, wineId);
+
+        if (!success)
+        {
+            return NotFound();
+        }
+    
+        var lotteryDto = await _lotteryService.GetLotteryById(lotteryId);
+        if (lotteryDto == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(lotteryDto);
+    }
 }

@@ -103,7 +103,11 @@ public class LotteryService : ILotteryService
 
     public async Task<bool> DrawWinner(int lotteryId, int wineId)
     {
-        var lottery = await _context.Lotteries.FindAsync(lotteryId);
+        var lottery = await _context.Lotteries    
+            .Include(lottery => lottery.Tickets)
+            .Include(lottery => lottery
+                .Wines.OrderBy(wine => wine.Price))
+            .FirstOrDefaultAsync(lottery => lottery.Id == lotteryId);
         
         if (lottery == null)
         {
@@ -125,7 +129,7 @@ public class LotteryService : ILotteryService
         selectedTicket.HasWon = true;
         wineToAward.WonBy = selectedTicket.Owner;
 
-        _context.SaveChangesAsync();
+        await _context.SaveChangesAsync();
 
         return true;
     }
