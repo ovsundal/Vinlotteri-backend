@@ -8,7 +8,7 @@ public class Wine
     [Key] public int Id { get; init; }
     [Required] public decimal Price { get; init; }
     [Required] public string Name { get; init; }
-    [Required] public bool HasBeenAwarded { get; init; }
+    [Required] public string WonBy { get; init; }
     [ForeignKey("Lottery")] public int LotteryId { get; set; }
     public Lottery Lottery { get; set; }
 }

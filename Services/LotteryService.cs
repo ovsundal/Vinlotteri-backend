@@ -56,7 +56,7 @@ public class LotteryService : ILotteryService
             Id = wine.Id,
             Price = wine.Price,
             Name = wine.Name,
-            HasBeenAwarded = wine.HasBeenAwarded
+            WonBy = wine.WonBy
         });
         
         var totalWinePrice = lottery.Wines.Sum(wine => wine.Price);
