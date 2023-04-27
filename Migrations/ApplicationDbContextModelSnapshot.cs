@@ -79,9 +79,6 @@ namespace Vinlotteri_backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("HasBeenAwarded")
-                        .HasColumnType("bit");
-
                     b.Property<int>("LotteryId")
                         .HasColumnType("int");
 
@@ -91,6 +88,10 @@ namespace Vinlotteri_backend.Migrations
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("WonBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
