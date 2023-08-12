@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using Vinlotteri_backend.DTOs;
 using Vinlotteri_backend.Services;
 
@@ -15,6 +16,7 @@ public class LotteryController : ControllerBase
         _lotteryService = lotteryService;
     }
 
+    [SwaggerOperation(Summary = "Create a new lottery")]
     [HttpGet]
     public async Task<IActionResult> CreateLottery()
     {
@@ -30,6 +32,7 @@ public class LotteryController : ControllerBase
         return CreatedAtAction(nameof(GetLottery), new { id = lotteryDto.Id }, lotteryDto);
     }
     
+    [SwaggerOperation(Summary = "Get details of a specific lottery by ID")]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetLottery(int id)
     {
@@ -42,7 +45,7 @@ public class LotteryController : ControllerBase
         
         return Ok(lotteryDto);
     }
-    
+    [SwaggerOperation(Summary = "Purchase a ticket for a specific lottery")]
     [HttpPost("{id}")]
     public async Task<IActionResult> BuyTicket(int id, [FromBody] TicketDto ticket)
     {
@@ -66,6 +69,7 @@ public class LotteryController : ControllerBase
         return Ok(lotteryDto);
     }
     
+    [SwaggerOperation(Summary = "Draw a winner for a specific wine in a lottery")]
     [HttpGet("{lotteryId}/{wineId}")]
     public async Task<IActionResult> DrawWinner(int lotteryId, int wineId)
     {
