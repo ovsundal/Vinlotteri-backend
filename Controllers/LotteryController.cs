@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using Vinlotteri_backend.Commands;
 using Vinlotteri_backend.DTOs;
-using Vinlotteri_backend.Services;
+using Vinlotteri_backend.Queries;
 
 namespace Vinlotteri_backend.Controllers;
 
@@ -9,13 +11,13 @@ namespace Vinlotteri_backend.Controllers;
 [Route("[controller]")]
 public class LotteryController : ControllerBase
 {
-    private readonly ILotteryService _lotteryService;
+    private readonly IMediator _mediator;
 
-    public LotteryController(ILotteryService lotteryService)
+    public LotteryController(IMediator mediator)
     {
-        _lotteryService = lotteryService;
+        _mediator = mediator;
     }
-
+    
     [SwaggerOperation(Summary = "Create a new lottery")]
     [HttpGet]
     public async Task<IActionResult> CreateLottery()
@@ -25,26 +27,26 @@ public class LotteryController : ControllerBase
             return BadRequest(ModelState);
         }
         
-        var lotteryId = await _lotteryService.CreateLottery();
-        
-        var lotteryDto = await _lotteryService.GetLotteryById(lotteryId);
+        var command = new CreateLotteryCommand();
+        var lotteryDto = await _mediator.Send(command);
 
-        return CreatedAtAction(nameof(GetLottery), new { id = lotteryDto.Id }, lotteryDto);
+        return CreatedAtAction(nameof(GetLotteryById), new { id = lotteryDto.Id }, lotteryDto);
     }
     
     [SwaggerOperation(Summary = "Get details of a specific lottery by ID")]
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetLottery(int id)
+    
+    public async Task<IActionResult> GetLotteryById(int id)
     {
-        var lotteryDto = await _lotteryService.GetLotteryById(id);
-
-        if (lotteryDto == null)
+        var query = new GetLotteryByIdQuery
         {
-            return NotFound();
-        }
-        
+            Id = id
+        };
+        var lotteryDto = await _mediator.Send(query);
+
         return Ok(lotteryDto);
     }
+    
     [SwaggerOperation(Summary = "Purchase a ticket for a specific lottery")]
     [HttpPost("{id}")]
     public async Task<IActionResult> BuyTicket(int id, [FromBody] TicketDto ticket)
@@ -53,18 +55,13 @@ public class LotteryController : ControllerBase
         {
             throw new ArgumentException("Ticket owner cannot be empty");
         }
-        var success = await _lotteryService.BuyTicket(id, ticket.Number, ticket.Owner);
 
-        if (!success)
+        var command = new BuyTicketCommand
         {
-            return NotFound();
-        }
-        
-        var lotteryDto = await _lotteryService.GetLotteryById(id);
-        if (lotteryDto == null)
-        {
-            return NotFound();
-        }
+            Id = id,
+            Ticket = ticket
+        };
+        var lotteryDto = await _mediator.Send(command);
     
         return Ok(lotteryDto);
     }
@@ -73,18 +70,12 @@ public class LotteryController : ControllerBase
     [HttpGet("{lotteryId}/{wineId}")]
     public async Task<IActionResult> DrawWinner(int lotteryId, int wineId)
     {
-        var success = await _lotteryService.DrawWinner(lotteryId, wineId);
-
-        if (!success)
+        var command = new DrawWinnerCommand
         {
-            return NotFound();
-        }
-    
-        var lotteryDto = await _lotteryService.GetLotteryById(lotteryId);
-        if (lotteryDto == null)
-        {
-            return NotFound();
-        }
+            LotteryId = lotteryId,
+            WineId = wineId
+        };
+        var lotteryDto = await _mediator.Send(command);
 
         return Ok(lotteryDto);
     }
