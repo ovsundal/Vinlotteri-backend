@@ -23,7 +23,14 @@ public class DrawWinnerHandler : IRequestHandler<DrawWinnerCommand, LotteryDto?>
         {
             throw new FailedToDrawWinnerException();
         }
+        
+        var lotteryDto = await _lotteryService.GetLotteryById(request.LotteryId);
+
+        if (lotteryDto == null)
+        {
+            throw new FailedToFindLotteryException();
+        }
     
-        return await _lotteryService.GetLotteryById(request.LotteryId);
+        return lotteryDto;
     }
 }

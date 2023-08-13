@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Vinlotteri_backend.DTOs;
+using Vinlotteri_backend.Exceptions;
 using Vinlotteri_backend.Queries;
 using Vinlotteri_backend.Services;
 
@@ -14,8 +15,15 @@ public class GetLotteryByIdHandler : IRequestHandler<GetLotteryByIdQuery, Lotter
         _lotteryService = lotteryService;
     }
 
-    public async Task<LotteryDto?> Handle(GetLotteryByIdQuery request, CancellationToken cancellationToken)
+    public async Task<LotteryDto> Handle(GetLotteryByIdQuery request, CancellationToken cancellationToken)
     {
-        return  await _lotteryService.GetLotteryById(request.Id);
+        var lotteryDto = await _lotteryService.GetLotteryById(request.Id);
+
+        if (lotteryDto == null)
+        {
+            throw new FailedToFindLotteryException();
+        }
+        
+        return lotteryDto;
     }
 }

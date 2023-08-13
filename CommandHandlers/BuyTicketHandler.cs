@@ -24,6 +24,13 @@ public class BuyTicketHandler : IRequestHandler<BuyTicketCommand, LotteryDto?>
             throw new FailedToBuyTicketException();
         }
         
-        return await _lotteryService.GetLotteryById(request.Id);
+        var lotteryDto = await _lotteryService.GetLotteryById(request.Id);
+
+        if (lotteryDto == null)
+        {
+            throw new FailedToFindLotteryException();
+        }
+    
+        return lotteryDto;
     }
 }
