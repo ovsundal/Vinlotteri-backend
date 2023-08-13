@@ -9,6 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApplicationDbContext>(options => 
     options.UseSqlServer(Environment.GetEnvironmentVariable("VinlotteriConnectionString")));
 
+// setup MediatR
+builder.Services.AddMediatR(c => c.RegisterServicesFromAssemblyContaining<Program>());
+
 // Dependency injections
 builder.Services.AddTransient<ILotteryService, LotteryService>();
 
