@@ -2,7 +2,7 @@
 
 public class TicketDto
 {
-    public int Number { get; set; }
-    public string Owner { get; set; }
+    public int Number { get; init; }
+    public string Owner { get; init; } = null!;
     public bool HasWon { get; init; }
 }

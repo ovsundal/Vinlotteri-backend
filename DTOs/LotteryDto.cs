@@ -3,12 +3,12 @@
 public class LotteryDto
 {
     public int Id { get; init; }
-    public string AvailableTicketsInfo { get; init; }
-    public string TicketPriceInfo { get; init; }
-    public string LotteryIncomeInfo { get; init; }
-    public string SpentOnPrizesInfo { get; init; }
-    public string TotalBalanceInfo { get; init; }
-    public IEnumerable<TicketDto> Tickets { get; init; }
-    public IEnumerable<WineDto> Wines { get; init; }
+    public string AvailableTicketsInfo { get; init; } = null!;
+    public string TicketPriceInfo { get; init; } = null!;
+    public string LotteryIncomeInfo { get; init; } = null!;
+    public string SpentOnPrizesInfo { get; init; } = null!;
+    public string TotalBalanceInfo { get; init; } = null!;
+    public IEnumerable<TicketDto> Tickets { get; init; } = null!;
+    public IEnumerable<WineDto> Wines { get; init; } = null!;
     public WineDto? NextWineToAward { get; init; }
 }
