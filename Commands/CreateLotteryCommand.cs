@@ -5,5 +5,5 @@ namespace Vinlotteri_backend.Commands;
 
 public class CreateLotteryCommand : IRequest<LotteryDto>
 {
-    public int Id { get; init; }
+    public required int Id { get; init; }
 }

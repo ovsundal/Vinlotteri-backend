@@ -5,6 +5,6 @@ namespace Vinlotteri_backend.Commands;
 
 public class BuyTicketCommand : IRequest<LotteryDto>
 {
-    public int Id { get; init; }
-    public TicketDto Ticket { get; init; } = null!;
+    public required int Id { get; init; }
+    public required TicketDto Ticket { get; init; } = null!;
 }
